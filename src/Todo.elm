@@ -14,8 +14,8 @@ main =
 
 type alias Model =
   { task_name : String
-  , description : String
-  , notes : String
+  , label : String
+  , task : String
   , category : String
   , priority : String
   , status : String
@@ -33,9 +33,8 @@ init =
 
 type Msg
   = Task_Name String
-  | Description String
-  | Notes String
-  | Category String
+  | Label String
+  | Task String
   | Priority String
   | Status String
 
@@ -46,14 +45,11 @@ update msg model =
     Task_Name task_name ->
       { model | task_name = task_name }
 
-    Description description ->
-      { model | description = description }
+    Label label ->
+      { model | label = label }
 
-    Notes notes ->
-      { model | notes = notes }
-
-    Category category ->
-      { model | category = category }
+    Task task ->
+      { model | task = task }
 
     Priority priority ->
       { model | priority = priority }
@@ -70,16 +66,15 @@ view : Model -> Html Msg
 view model =
   div [ class "main" ] [
     div [ class "signup" ]
-    [ Html.form [ action "http://localhost:4000/v1/todoitems", id "userform", method "POST" ]
+    [ Html.form [ action "http://localhost:4000/v1/todo", id "userform", method "POST" ]
         [ label [ attribute "aria-hidden" "true", for "chk" ]
             [ text "To-Do List Form" ]
         , div []
-        [ viewInput "text" "" model.task_name Task_Name
-        , viewInput "text" "" model.description Description
-        , viewInput "text" "" model.notes Notes
-        , viewInput "text" "" model.category Category
-        , viewInput "text" "" model.priority Priority
-        , viewInput "text" "" model.status Status
+        [ viewInput "text" "What is the name of your task?" model.task_name Task_Name
+        , viewInput "text" "What type of task is it?" model.label Label
+        , viewInput "text" "What is your task?" model.task Task
+        , viewInput "text" "How urgent is your task?" model.priority Priority
+        , viewInput "text" "Is it completed or incomplete?" model.status Status
         , viewValidation model
         ]
         , button []
@@ -96,7 +91,7 @@ viewInput t p v toMsg =
 
 viewValidation : Model -> Html msg
 viewValidation model =
-  if model.task_name == "" || model.description == "" || model.notes == "" || model.category == "" || model.priority == "" || model.status == "" then
+  if model.task_name == "" || model.label == "" || model.task == "" || model.priority == "" || model.status == "" then
     div [ style "color" "red", style "text-align" "center" ] [ text "Please Fill All Fields!" ]
   else
     div [ style "color" "green",  style "text-align" "center" ] [ text "Good!" ] 

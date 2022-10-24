@@ -4371,8 +4371,8 @@ function _Browser_load(url)
 	}));
 }
 var $author$project$Todo$Model = F6(
-	function (task_name, description, notes, category, priority, status) {
-		return {category: category, description: description, notes: notes, priority: priority, status: status, task_name: task_name};
+	function (task_name, label, task, category, priority, status) {
+		return {category: category, label: label, priority: priority, status: status, task: task, task_name: task_name};
 	});
 var $author$project$Todo$init = A6($author$project$Todo$Model, '', '', '', '', '', '');
 var $elm$core$Basics$EQ = {$: 'EQ'};
@@ -5193,21 +5193,16 @@ var $author$project$Todo$update = F2(
 				return _Utils_update(
 					model,
 					{task_name: task_name});
-			case 'Description':
-				var description = msg.a;
+			case 'Label':
+				var label = msg.a;
 				return _Utils_update(
 					model,
-					{description: description});
-			case 'Notes':
-				var notes = msg.a;
+					{label: label});
+			case 'Task':
+				var task = msg.a;
 				return _Utils_update(
 					model,
-					{notes: notes});
-			case 'Category':
-				var category = msg.a;
-				return _Utils_update(
-					model,
-					{category: category});
+					{task: task});
 			case 'Priority':
 				var priority = msg.a;
 				return _Utils_update(
@@ -5220,20 +5215,17 @@ var $author$project$Todo$update = F2(
 					{status: status});
 		}
 	});
-var $author$project$Todo$Category = function (a) {
-	return {$: 'Category', a: a};
-};
-var $author$project$Todo$Description = function (a) {
-	return {$: 'Description', a: a};
-};
-var $author$project$Todo$Notes = function (a) {
-	return {$: 'Notes', a: a};
+var $author$project$Todo$Label = function (a) {
+	return {$: 'Label', a: a};
 };
 var $author$project$Todo$Priority = function (a) {
 	return {$: 'Priority', a: a};
 };
 var $author$project$Todo$Status = function (a) {
 	return {$: 'Status', a: a};
+};
+var $author$project$Todo$Task = function (a) {
+	return {$: 'Task', a: a};
 };
 var $author$project$Todo$Task_Name = function (a) {
 	return {$: 'Task_Name', a: a};
@@ -5324,7 +5316,7 @@ var $author$project$Todo$viewInput = F4(
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $author$project$Todo$viewValidation = function (model) {
-	return ((model.task_name === '') || ((model.description === '') || ((model.notes === '') || ((model.category === '') || ((model.priority === '') || (model.status === '')))))) ? A2(
+	return ((model.task_name === '') || ((model.label === '') || ((model.task === '') || ((model.priority === '') || (model.status === ''))))) ? A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
@@ -5367,7 +5359,7 @@ var $author$project$Todo$view = function (model) {
 						$elm$html$Html$form,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$action('http://localhost:4000/v1/todoitems'),
+								$elm$html$Html$Attributes$action('http://localhost:4000/v1/todo'),
 								$elm$html$Html$Attributes$id('userform'),
 								$elm$html$Html$Attributes$method('POST')
 							]),
@@ -5389,12 +5381,11 @@ var $author$project$Todo$view = function (model) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										A4($author$project$Todo$viewInput, 'text', '', model.task_name, $author$project$Todo$Task_Name),
-										A4($author$project$Todo$viewInput, 'text', '', model.description, $author$project$Todo$Description),
-										A4($author$project$Todo$viewInput, 'text', '', model.notes, $author$project$Todo$Notes),
-										A4($author$project$Todo$viewInput, 'text', '', model.category, $author$project$Todo$Category),
-										A4($author$project$Todo$viewInput, 'text', '', model.priority, $author$project$Todo$Priority),
-										A4($author$project$Todo$viewInput, 'text', '', model.status, $author$project$Todo$Status),
+										A4($author$project$Todo$viewInput, 'text', 'What is the name of your task?', model.task_name, $author$project$Todo$Task_Name),
+										A4($author$project$Todo$viewInput, 'text', 'What type of task is it?', model.label, $author$project$Todo$Label),
+										A4($author$project$Todo$viewInput, 'text', 'What is your task?', model.task, $author$project$Todo$Task),
+										A4($author$project$Todo$viewInput, 'text', 'How urgent is your task?', model.priority, $author$project$Todo$Priority),
+										A4($author$project$Todo$viewInput, 'text', 'Is it completed or incomplete?', model.status, $author$project$Todo$Status),
 										$author$project$Todo$viewValidation(model)
 									])),
 								A2(
